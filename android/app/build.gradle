@@ -1,0 +1,46 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
+}
+
+android {
+    namespace = "com.example.my_library"
+    compileSdk = 34 
+    ndkVersion = "25.2.9519653" 
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+ defaultConfig {
+        applicationId = "com.example.my_library"
+        minSdk = 23 
+        targetSdk = 34 
+        versionCode = 1
+        versionName = "1.0"
+        multiDexEnabled true 
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation 'com.google.firebase:firebase-auth'
+}
+
+apply plugin: 'com.google.gms.google-services'
