@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class KitapGuncelleEkrani extends StatefulWidget {
-  final String bookId;
+  final String kitapId;
 
-  const KitapGuncelleEkrani({required this.bookId, super.key});
+  const KitapGuncelleEkrani({required this.kitapId, super.key});
 
   @override
   _KitapGuncelleEkraniState createState() => _KitapGuncelleEkraniState();
@@ -25,30 +25,30 @@ class _KitapGuncelleEkraniState extends State<KitapGuncelleEkrani> {
     _kitapVerileriniYukle();
   }
 
-  // Kitap verilerini yükler
   void _kitapVerileriniYukle() async {
-    var docSnapshot = await FirebaseFirestore.instance
+    var dosyaAnlikGoruntu = await FirebaseFirestore.instance
         .collection('kitaplar')
-        .doc(widget.bookId)
+        .doc(widget.kitapId)
         .get();
-    if (docSnapshot.exists) {
-      _kitapAdiController.text = docSnapshot['kitapAdi'];
-      _yazarAdiController.text = docSnapshot['yazarAdi'];
-      _ozetController.text = docSnapshot['ozet'];
+    if (dosyaAnlikGoruntu.exists) {
+      _kitapAdiController.text = dosyaAnlikGoruntu['kitapAdi'];
+      _yazarAdiController.text = dosyaAnlikGoruntu['yazarAdi'];
+      _ozetController.text = dosyaAnlikGoruntu['ozet'] ?? '';
     }
   }
 
-  // Kitap bilgilerini günceller
   Future<void> _kitabiGuncelle() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
         await FirebaseFirestore.instance
             .collection('kitaplar')
-            .doc(widget.bookId)
+            .doc(widget.kitapId)
             .update({
-          'kitapAdi': _kitapAdiController.text,
-          'yazarAdi': _yazarAdiController.text,
-          'ozet': _ozetController.text,
+          'kitapAdi': _kitapAdiController.text.trim(),
+          'yazarAdi': _yazarAdiController.text.trim(),
+          'ozet': _ozetController.text.trim().isNotEmpty
+              ? _ozetController.text.trim()
+              : null,
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -57,7 +57,7 @@ class _KitapGuncelleEkraniState extends State<KitapGuncelleEkrani> {
         Navigator.pop(context);
       } catch (a) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Bir hata oluştu!")),
+          SnackBar(content: Text("Bir hata oluştu: ${a.toString()}")),
         );
       }
     }
@@ -97,14 +97,9 @@ class _KitapGuncelleEkraniState extends State<KitapGuncelleEkrani> {
               ),
               TextFormField(
                 controller: _ozetController,
-                decoration: InputDecoration(labelText: 'Özet'),
+                decoration:
+                    InputDecoration(labelText: 'Özet veya Sevdiğim Bölüm'),
                 maxLines: 5,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Özet gereklidir';
-                  }
-                  return null;
-                },
               ),
               SizedBox(height: 20),
               ElevatedButton(

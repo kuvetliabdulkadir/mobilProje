@@ -7,7 +7,7 @@ class FavorilerEkrani extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final kullaniciId = FirebaseAuth.instance.currentUser?.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -16,25 +16,25 @@ class FavorilerEkrani extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('favoriler')
-            .where('userId', isEqualTo: userId)
+            .where('userId', isEqualTo: kullaniciId)
             .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
+        builder: (context, AsyncSnapshot<QuerySnapshot> anlikGoruntu) {
+          if (!anlikGoruntu.hasData) {
             return Center(child: CircularProgressIndicator());
           }
 
-          final favorites = snapshot.data!.docs;
+          final favoriler = anlikGoruntu.data!.docs;
 
-          if (favorites.isEmpty) {
+          if (favoriler.isEmpty) {
             return Center(
                 child: Text("Henüz favorilere eklenmiş kitap yok maalesef."));
           }
 
           return ListView.builder(
-            itemCount: favorites.length,
+            itemCount: favoriler.length,
             itemBuilder: (context, index) {
-              final kitap = favorites[index];
-              final docId = kitap.id;
+              final kitap = favoriler[index];
+              final dosyaId = kitap.id;
 
               return ListTile(
                 title: Text(kitap['kitapAdi']),
@@ -47,7 +47,7 @@ class FavorilerEkrani extends StatelessWidget {
                   onPressed: () async {
                     await FirebaseFirestore.instance
                         .collection('favoriler')
-                        .doc(docId)
+                        .doc(dosyaId)
                         .delete();
                   },
                 ),

@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_library/screens/giris_ekrani.dart';
 
 class KayitEkrani extends StatelessWidget {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController adController = TextEditingController();
+  final TextEditingController soyadController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController parolaController = TextEditingController();
 
   KayitEkrani({super.key});
 
@@ -14,7 +14,7 @@ class KayitEkrani extends StatelessWidget {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        password: parolaController.text.trim(),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Kayıt başarılı!')),
@@ -25,7 +25,7 @@ class KayitEkrani extends StatelessWidget {
       );
     } catch (a) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Kayıt başarısız!')),
+        SnackBar(content: Text('Kayıt başarısız! Lütfen yeniden deneyin.')),
       );
     }
   }
@@ -47,13 +47,13 @@ class KayitEkrani extends StatelessWidget {
               TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 121, 219)),
                 cursorColor: Colors.blue,
-                controller: nameController,
+                controller: adController,
                 decoration: InputDecoration(labelText: 'Adınız'),
               ),
               TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 121, 219)),
                 cursorColor: Colors.blue,
-                controller: surnameController,
+                controller: soyadController,
                 decoration: InputDecoration(labelText: 'Soyadınız'),
               ),
               TextField(
@@ -65,7 +65,7 @@ class KayitEkrani extends StatelessWidget {
               TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 121, 219)),
                 cursorColor: Colors.blue,
-                controller: passwordController,
+                controller: parolaController,
                 decoration: InputDecoration(labelText: 'Parola'),
                 obscureText: true,
               ),

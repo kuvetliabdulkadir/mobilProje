@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class GirisEkrani extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController parolaController = TextEditingController();
 
   GirisEkrani({super.key});
 
@@ -13,7 +13,7 @@ class GirisEkrani extends StatelessWidget {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        password: parolaController.text.trim(),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Giriş başarılı.')),
@@ -50,7 +50,7 @@ class GirisEkrani extends StatelessWidget {
               TextField(
                 style: TextStyle(color: const Color.fromARGB(255, 0, 121, 219)),
                 cursorColor: Colors.blue,
-                controller: passwordController,
+                controller: parolaController,
                 decoration: InputDecoration(labelText: 'Parola'),
                 obscureText: true,
               ),

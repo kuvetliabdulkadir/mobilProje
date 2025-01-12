@@ -14,7 +14,7 @@ class AnaEkran extends StatefulWidget {
 }
 
 class _AnaEkranState extends State<AnaEkran> {
-  final TextEditingController searchController = TextEditingController();
+  final TextEditingController aramaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +85,8 @@ class _AnaEkranState extends State<AnaEkran> {
               title: Text("Hesabı Sil"),
               textColor: Color.fromARGB(255, 226, 11, 11),
               onTap: () async {
-                final user = FirebaseAuth.instance.currentUser;
-                if (user != null) {
+                final kullanici = FirebaseAuth.instance.currentUser;
+                if (kullanici != null) {
                   final confirmation = await showDialog<bool>(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -118,25 +118,25 @@ class _AnaEkranState extends State<AnaEkran> {
                   try {
                     final kitaplarQueery = await FirebaseFirestore.instance
                         .collection('kitaplar')
-                        .where('userId', isEqualTo: user.uid)
+                        .where('userId', isEqualTo: kullanici.uid)
                         .get();
 
-                    final batch = FirebaseFirestore.instance.batch();
+                    final katagori = FirebaseFirestore.instance.batch();
                     for (var doc in kitaplarQueery.docs) {
-                      batch.delete(doc.reference);
+                      katagori.delete(doc.reference);
                     }
 
                     final favorilerQuery = await FirebaseFirestore.instance
                         .collection('favoriler')
-                        .where('userId', isEqualTo: user.uid)
+                        .where('userId', isEqualTo: kullanici.uid)
                         .get();
 
                     for (var doc in favorilerQuery.docs) {
-                      batch.delete(doc.reference);
+                      katagori.delete(doc.reference);
                     }
 
-                    await batch.commit();
-                    await user.delete();
+                    await katagori.commit();
+                    await kullanici.delete();
 
                     Navigator.pop(context);
                     Navigator.pushAndRemoveUntil(
@@ -167,7 +167,7 @@ class _AnaEkranState extends State<AnaEkran> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: searchController,
+              controller: aramaController,
               onChanged: (value) {
                 setState(() {});
               },
@@ -185,33 +185,33 @@ class _AnaEkranState extends State<AnaEkran> {
                   .where('userId',
                       isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                   .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
+              builder: (context, AsyncSnapshot<QuerySnapshot> anlikGoruntu) {
+                if (!anlikGoruntu.hasData) {
                   return Center(child: CircularProgressIndicator());
                 }
-                final filteredDocs = snapshot.data!.docs.where((doc) {
+                final filtrelenmisDosya = anlikGoruntu.data!.docs.where((doc) {
                   final kitapAdi = doc['kitapAdi'].toString().toLowerCase();
-                  final searchText = searchController.text.toLowerCase();
-                  return kitapAdi.contains(searchText);
+                  final aramaText = aramaController.text.toLowerCase();
+                  return kitapAdi.contains(aramaText);
                 }).toList();
 
-                if (filteredDocs.isEmpty) {
+                if (filtrelenmisDosya.isEmpty) {
                   return Center(
                       child: Text(
                           "  Sonuç bulunamadı aradığınız kitabı\neklediğinizden emin olun lütfen. "));
                 }
 
                 return ListView(
-                  children: filteredDocs.map((doc) {
+                  children: filtrelenmisDosya.map((dosya) {
                     return ListTile(
-                      title: Text(doc['kitapAdi']),
-                      subtitle: Text("Yazar: ${doc['yazarAdi']}"),
+                      title: Text(dosya['kitapAdi']),
+                      subtitle: Text("Yazar: ${dosya['yazarAdi']}"),
                       onTap: () {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: Text(doc['kitapAdi']),
-                            content: Text("Özet: ${doc['ozet']}"),
+                            title: Text(dosya['kitapAdi']),
+                            content: Text("Özet: ${dosya['ozet']}"),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),

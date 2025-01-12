@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'kitap_guncelle_ekrani.dart'; // Kitap güncelleme ekranını ekliyoruz.
+import 'kitap_guncelle_ekrani.dart'; 
 
 class KitapListeEkrani extends StatelessWidget {
   const KitapListeEkrani({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final kullaniciId = FirebaseAuth.instance.currentUser?.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -17,34 +17,33 @@ class KitapListeEkrani extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('kitaplar')
-            .where('userId', isEqualTo: userId)
+            .where('userId', isEqualTo: kullaniciId)
             .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
+        builder: (context, AsyncSnapshot<QuerySnapshot> anlikGoruntu) {
+          if (!anlikGoruntu.hasData) {
             return Center(child: CircularProgressIndicator());
           }
 
-          final books = snapshot.data!.docs;
+          final kitaplar = anlikGoruntu.data!.docs;
 
-          if (books.isEmpty) {
+          if (kitaplar.isEmpty) {
             return Center(child: Text("Henüz kitap eklenmedi."));
           }
 
           return ListView.builder(
-            itemCount: books.length,
+            itemCount: kitaplar.length,
             itemBuilder: (context, index) {
-              final book = books[index];
-              final docId = book.id;
+              final kitap = kitaplar[index];
+              final dosyaId = kitap.id;
 
               return ListTile(
-                title: Text(book['kitapAdi']),
-                subtitle: Text("Yazar: ${book['yazarAdi']}"),
+                title: Text(kitap['kitapAdi']),
+                subtitle: Text("Yazar: ${kitap['yazarAdi']}"),
                 onTap: () {
-                  // Kitap bilgilerini güncelleyebileceğiniz sayfaya yönlendiriyoruz
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => KitapGuncelleEkrani(bookId: docId),
+                      builder: (context) => KitapGuncelleEkrani(kitapId: dosyaId),
                     ),
                   );
                 },
@@ -54,11 +53,11 @@ class KitapListeEkrani extends StatelessWidget {
                     StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection('favoriler')
-                          .doc(docId)
+                          .doc(dosyaId)
                           .snapshots(),
                       builder: (context,
-                          AsyncSnapshot<DocumentSnapshot> favSnapshot) {
-                        final isFavorite = favSnapshot.data?.exists ?? false;
+                          AsyncSnapshot<DocumentSnapshot> favAnlikGoruntu) {
+                        final isFavorite = favAnlikGoruntu.data?.exists ?? false;
 
                         return IconButton(
                           icon: Icon(
@@ -71,17 +70,17 @@ class KitapListeEkrani extends StatelessWidget {
                             if (isFavorite) {
                               await FirebaseFirestore.instance
                                   .collection('favoriler')
-                                  .doc(docId)
+                                  .doc(dosyaId)
                                   .delete();
                             } else {
                               await FirebaseFirestore.instance
                                   .collection('favoriler')
-                                  .doc(docId)
+                                  .doc(dosyaId)
                                   .set({
-                                'kitapAdi': book['kitapAdi'],
-                                'yazarAdi': book['yazarAdi'],
-                                'ozet': book['ozet'],
-                                'userId': userId,
+                                'kitapAdi': kitap['kitapAdi'],
+                                'yazarAdi': kitap['yazarAdi'],
+                                'ozet': kitap['ozet'],
+                                'userId': kullaniciId,
                               });
                             }
                           },
@@ -90,7 +89,7 @@ class KitapListeEkrani extends StatelessWidget {
                     ),
                     IconButton(
                       icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => _silmeOnayiGoster(context, docId),
+                      onPressed: () => _silmeOnayiGoster(context, dosyaId),
                     ),
                   ],
                 ),
@@ -102,7 +101,7 @@ class KitapListeEkrani extends StatelessWidget {
     );
   }
 
-  void _silmeOnayiGoster(BuildContext context, String docId) {
+  void _silmeOnayiGoster(BuildContext context, String dosyaId) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -118,12 +117,12 @@ class KitapListeEkrani extends StatelessWidget {
               try {
                 await FirebaseFirestore.instance
                     .collection('kitaplar')
-                    .doc(docId)
+                    .doc(dosyaId)
                     .delete();
 
                 await FirebaseFirestore.instance
                     .collection('favoriler')
-                    .doc(docId)
+                    .doc(dosyaId)
                     .delete();
 
                 Navigator.pop(context);

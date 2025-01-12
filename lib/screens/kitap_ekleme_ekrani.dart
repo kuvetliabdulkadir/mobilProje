@@ -39,9 +39,9 @@ class KitapEklemeEkrani extends StatelessWidget {
                 try {
                   if (kitapAdiController.text.isNotEmpty &&
                       yazarAdiController.text.isNotEmpty) {
-                    final userId = FirebaseAuth.instance.currentUser?.uid;
+                    final kullaniciId = FirebaseAuth.instance.currentUser?.uid;
 
-                    if (userId != null) {
+                    if (kullaniciId != null) {
                       await FirebaseFirestore.instance
                           .collection('kitaplar')
                           .add({
@@ -50,7 +50,7 @@ class KitapEklemeEkrani extends StatelessWidget {
                         'ozet': ozetController.text.isNotEmpty
                             ? ozetController.text
                             : null,
-                        'userId': userId,
+                        'userId': kullaniciId,
                       });
 
                       ScaffoldMessenger.of(context).showSnackBar(
