@@ -13,7 +13,7 @@ My Library, kullanıcıların kütüphanesini dijital ortamda yönetmelerine ola
 | ## Kullanılan Teknolojiler |
 |----------------------------|
 | - Flutter - Dart |
-| - Cloud Firestore: Veri tabanı yönetimi |
+| - Firebase Firestore: Veri tabanı yönetimi |
 | - Firebase Authentication: Kullanıcı doğrulama |
 
 | ## Proje Kullanılan Eklentiler | 
