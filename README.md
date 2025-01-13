@@ -5,7 +5,7 @@ My Library, kullanıcıların kütüphanesini dijital ortamda yönetmelerine ola
 
 |  Uygulama Özellikleri |
 |----------------------------|
-| - Hitap Ekleme, Silme, Düzenleme |
+| - Kitap Ekleme, Silme, Düzenleme |
 | - Eklenen Kitapları Favorilere Ekleme, Çıkarma |
 | - Eklenen Kitapları Arama |
 | - Kayıt ve Giriş |
