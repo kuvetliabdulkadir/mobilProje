@@ -93,6 +93,7 @@ Firebase Cloud Firestore kullanılarak iki ana koleksiyon oluşturulmuştur.
 |----------------------------|
 | - Kategorilere göre filtreleme |
 | - Kitap okuma durumu (okundu, okunuyor, okunacak) |
+| - Kullanıcılar kendi aralarında kitap listesini veya favoriler listesini paylaşabilmesi |
 | - Kullanıcı kendisi uygulama içinde kendi kitabını yazabilmesi. |
 
 gibi özellikler eklenebilir. Aşağıdaki linkten projeyi anlattığım  youtube videosuna ulaşabilirsiniz. 
