@@ -89,7 +89,7 @@ Firebase Cloud Firestore kullanılarak iki ana koleksiyon oluşturulmuştur.
 
 - Projenin şuan genel çalışma mantığı kullanıcıların kitaplarını dijital ortama kaydedebilmesi ve düzenleyebilmesidir.
 
-| Projeye bazı özellikler eklenebilir mesela: |
+| Projeye Bazı Özellikler Eklenebilir Mesela: |
 |----------------------------|
 | - Kategorilere göre filtreleme |
 | - Kitap okuma durumu (okundu, okunuyor, okunacak) |
