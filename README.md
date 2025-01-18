@@ -97,4 +97,5 @@ Firebase Cloud Firestore kullanılarak iki ana koleksiyon oluşturulmuştur.
 | - Kullanıcı kendisi uygulama içinde kendi kitabını yazabilmesi. |
 
 gibi özellikler eklenebilir. Aşağıdaki linkten projeyi anlattığım  youtube videosuna ulaşabilirsiniz. 
+## [YouTube Videosu](https://youtu.be/KshkLmpNsKg?si=XUD8lDXZpM9JOopv)
 
