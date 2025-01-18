@@ -87,7 +87,7 @@ Firebase Cloud Firestore kullanılarak iki ana koleksiyon oluşturulmuştur.
 | - Kullanıcı hesabını silmek istediğinde onaylamsı gerekir. Bunun sebebi hesabı yanlışlıkla silmenin önüne geçmek içindir. |
 | ![hesapsilme](https://github.com/user-attachments/assets/c3459d72-2e0a-4860-a331-a31d3e4b167f) |
 
-- Projenin şuan genel çalışma mantığı kullanıcıların kitaplarını dijital ortama kaydedebilmesi ve düzenleyebilmesidir.
+- Proje temel kitap yönetimi ihtiyaçlarını karşılamak için geliştirdim fakat eklemeyi düşündüğüm bazı özellikler de mevcut.
 
 | Projeye Eklenecek Bazı Özellikler  |
 |----------------------------|
